@@ -79,6 +79,7 @@ public class Bank {
 		}
 	}
 
+	/* CLIENT MANAGEMENT METHODS */
 	// Print client management menu
 	private static void manageClients() {
 		String[] menu = {
@@ -155,6 +156,158 @@ public class Bank {
 		scn.nextLine();
 	}
 
+	// Edit a registered client
+	private static void editClient() {
+		clearStdOut();
+		System.out.println("EDIT CLIENT");
+		System.out.println("===========");
+
+		System.out.println("Enter client ID: ");
+		String id = scn.nextLine();
+
+		try {
+			// Try to retrieve client
+			Client client = controller.queryClient(id);
+
+			System.out.println("\nNome: " + client.getName());
+			System.out.print("Name (<enter> = Do not change): ");
+			String name = scn.nextLine();
+			if (!name.equals("")) client.setName(name);
+
+			System.out.println("Sex: " + client.getSex());
+			System.out.print("Sex: (<enter> = Do not change): ");
+			String sex = scn.nextLine();
+			if (!sex.equals("")) client.setSex(sex);
+
+			System.out.println("Phone: " + client.getPhone());
+			System.out.print("Phone: (<enter> = Do not change)");
+			String phone = scn.nextLine();
+			if (!phone.equals("")) client.setPhone(phone);
+
+			controller.editClient(client);
+			System.out.println("\nClient successfully altered!\n");
+
+		} catch (ClientNotFoundException error) {
+			System.err.println(error.getMessage());
+		}
+
+		System.out.println("\nPress <enter> to return");
+		scn.nextLine();
+	}
+
+	// Remove a client
+	private static void removeClient() {
+		clearStdOut();
+		System.out.println("REMOVE CLIENT");
+		System.out.println("=============");
+
+		System.out.print("Enter client ID: ");
+		String id = scn.nextLine();
+
+		try {
+			// Try to retrieve client
+			Client client = controller.queryClient(id);
+			System.out.println("Name: " + client.getName());
+			System.out.println("Sex: " + client.getSex());
+			System.out.println("Phone: " + client.getPhone());
+			System.out.println();
+
+			System.out.println("Remove this client? [Y/n] ");
+			String answer = scn.nextLine();
+			
+			if (answer.equalsIgnoreCase("y")) {
+				controller.removeClient(client);
+				System.out.println("Client removed!");
+			}
+		} catch (ClientNotFoundException | ControllerException error) {
+			System.err.println(error.getMessage());
+		}
+
+		System.out.println();
+		System.out.println("Press <enter> to return");
+		scn.nextLine();
+	}
+
+	// List clients
+	private static void listClients() {
+		clearStdOut();
+		List<Client> clients = controller.getAllClients();
+
+		System.out.printf("ID      Name         Sex   Phone       ");
+		System.out.printf("======= ============ ===== ============");
+		for (Client client : clients) {
+			System.out.printf("%7s ", client.getID());
+			System.out.printf("%-12s ", client.getName());
+			System.out.printf("%-5s ", client.getSex());
+			System.out.printf("%12s\n", client.getPhone());
+		}
+
+		System.out.println();
+		System.out.println("Press <enter> to return");
+		scn.nextLine();
+	}
+
+	/* ACCOUNT MANAGEMENT METHODS */
+	private static void insertAccount() {
+		clearStdOut();
+		System.out.println("NEW ACCOUNT");
+		System.out.println("===========");
+
+		try {
+			System.out.println("Enter holder's ID: ");
+			String id = scn.nextLine();
+			Client holder = controller.queryClient(id);
+
+			Account account = new Account(holder);
+			controller.insertAccount(account);
+			System.out.println("Checking account #" + account.getNumber() + " created!");
+		} catch (ClientNotFoundException | RegisteredAccountException error) {
+			System.err.println(error.getMessage());
+		}
+
+		System.out.println("Press <enter> to return");
+		scn.nextLine();
+	}
+
+	private static void removeAccount() {
+		clearStdOut();
+		System.out.println("REMOVE ACCOUNT");
+		System.out.println("==============\n");
+		System.out.println("Enter account number: ");
+		String number = scn.nextLine();
+
+		try {
+			Account account = controller.queryAccount(number);
+			System.out.println();
+			System.out.println("Number: " + account.getNumber());
+			System.out.println("Holder: " + account.getHolder());
+			System.out.println("Balance: " + account.getBalance());
+			System.out.println();
+
+			System.out.println("Remove account? [Y/n] ");
+			String answer = scn.nextLine();
+
+			if (answer.equalsIgnoreCase("y")) {
+				if (controller.removeAccount(account)) {
+					System.out.println("Account removed!");
+				} else {
+					System.out.println("Account not removed: contains balance.");
+				}
+			}
+		} catch (AccountNotFoundException error) {
+			System.err.println(error.getMessage());
+		}
+
+		System.out.println("\nPress <enter> to return");
+		scn.nextLine();
+	}
+	private static void queryAccount() {}
+	private static void listAccounts() {}
+	private static void earnInterest() {}
+
+	/* CASH MACHINE */
+
+	/* Clear standard output */
 	private static void clearStdOut() {
 		System.out.print("\033[H\033[2J");
 	}
