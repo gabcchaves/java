@@ -423,16 +423,49 @@ public class Bank {
 			System.err.println(error.getMessage());
 		}
 
-		System.out.
+		returnToMenu();
 	}
 
 	private static void transfer(String accountNumber) {
+		clearStdOut();
+		System.out.println("TRANSFERENCE");
+		System.out.println("============\n");
+		System.out.println("Enter the number of destination account: ");
+		String destinationAccountNumber = scn.nextLine();
+		System.out.println("Enter the amount to be transfered: ");
+		double amount = scn.nextDouble();
+		scn.nextLine();
+
+		try {
+			controller.transfer(accountNumber, destinationAccountNumber, amount);
+			System.out.println("Transference made!");
+		} catch (AccountNotFoundException | InsufficientBalanceException error) {
+			System.err.println(error.getMessage());
+		}
+		
+		returnToMenu();
 	}
 
 	private static void checkBalance(String accountNumber) {
+		clearStdOut();
+		System.out.println("CHECK BALANCE");
+		System.out.println("=============\n");
+		
+		try {
+			Account account = controller.queryAccount(accountNumber);
+			System.out.println("\nNumber: " + account.getNumber());
+			System.out.println("Holder: " + account.getHolder());
+			System.out.println("Balance: " + account.getBalance());
+			System.out.println();
+		} catch (AccountNotFoundException error) {
+			System.err.println(error.getMessage());
+		}
+
+		returnToMenu();
 	}
 
 	private static void genStatement(String accountNumber) {
+		// TODO
 	}
 
 	/* Clear standard output */
