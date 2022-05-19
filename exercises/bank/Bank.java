@@ -69,8 +69,8 @@ public class Bank {
 
 			// Insert some money on accounts
 			try {
-				controller.deposit(account01.getID(), 200);
-				controller.deposit(account02.getID(), 200);
+				controller.deposit(account01.getId(), 200);
+				controller.deposit(account02.getId(), 200);
 			} catch (AccountNotFoundException error) {
 				System.out.println(error.getMessage());
 			}
@@ -232,7 +232,7 @@ public class Bank {
 		System.out.printf("ID      Name         Sex   Phone       ");
 		System.out.printf("======= ============ ===== ============");
 		for (Client client : clients) {
-			System.out.printf("%7s ", client.getID());
+			System.out.printf("%7s ", client.getId());
 			System.out.printf("%-12s ", client.getName());
 			System.out.printf("%-5s ", client.getSex());
 			System.out.printf("%12s\n", client.getPhone());
