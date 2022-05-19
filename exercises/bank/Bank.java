@@ -301,11 +301,132 @@ public class Bank {
 		System.out.println("\nPress <enter> to return");
 		scn.nextLine();
 	}
-	private static void queryAccount() {}
-	private static void listAccounts() {}
-	private static void earnInterest() {}
+
+	private static void queryAccount() {
+		clearStdOut();
+		System.out.println("QUERY ACCOUNT");
+		System.out.println("=============\n");
+		System.out.println("Enter account number: ");
+		String number = scn.nextLine();
+
+		try {
+			Account account = controller.queryAccount(number);
+			System.out.println("\nNumber: " + account.getNumber());
+			System.out.println("Holder: " + account.getHolder());
+			System.out.println("Balance: " + account.getBalance());
+			System.out.println();
+		} catch (AccountNotFoundException error) {
+			System.err.println(error.getMessage());
+		}
+
+		System.out.println("Press <enter> to return");
+		scn.nextLine();
+	}
+
+	private static void listAccounts() {
+		clearStdOut();
+
+		List<Account> accounts = controller.getAllAccounts();
+
+		System.out.println("Account Holder					Balance");
+		System.out.println("======= =============== ===========");
+		for (Account account : accounts) {
+			System.out.printf("%-7s ", account.getNumber());
+			System.out.printf("%-15s ", account.getHolder());
+			System.out.printf("R$ %.2f\n", account.getBalance());
+		}
+
+		System.out.println("\nPress <enter> to return");
+		scn.nextLine();
+	}
+
+	private static void earnInterest() {
+		// TODO
+	}
 
 	/* CASH MACHINE */
+	private static void cashMachine() {
+		try {
+			clearStdOut();
+			System.out.println("CASH MACHINE");
+			System.out.println("============\n");
+			System.out.println("Enter account number: ");
+			String accountNumber = controller.queryAccount(accountNumber);
+
+			short opCode;
+			do {
+				clearStdOut();
+				System.out.println("CASH MACHINE");
+				System.out.println("==== =======\n");
+				System.out.println("<1> Deposit");
+				System.out.println("<2> Withdrawal");
+				System.out.println("<3> Transference");
+				System.out.println("<4> Check balance");
+				System.out.println("<5> Statement");
+				System.out.println("<0> Back to main menu\n");
+				System.out.println("> ");
+
+				try {
+					opCode = Integer.valueOf(scn.nextLine());
+				} catch (Exception error) {
+					opCode = 0;
+				}
+
+				switch (opCode) {
+					case 0:
+						clearStdOut();
+						break;
+					case 1:
+						deposit(accountNumber);
+						break;
+					case 2:
+						withdraw(accountNumber);
+						break;
+					case 3:
+						transfer(accountNumber);
+						break;
+					case 4:
+						checkBalance(accountNumber());
+						break;
+					case 5:
+						genStatement(accountNumber());
+						break;
+				}
+			} while (opCode != 0);
+		} catch (AccountNotFoundException error) {
+			System.err.println(error.getMessage());
+		}
+		
+		System.out.println("\nPress <enter> to return");
+		scn.nextLine();
+	}
+
+	private static void deposit(String accountNumber) {
+		clearStdOut();
+		System.out.println("DEPOSIT INTO ACCOUNT");
+		System.out.println("====================\n");
+		System.out.println("Enter the amount: ");
+		double amount = scn.nextDouble();
+
+		try {
+			controller.deposit(accountNumber, amount);
+			System.out.println("Deposit made!");
+		} catch (AccountNotFoundException error) {
+			System.err.println(error.getMessage());
+		}
+	}
+
+	private static void withdraw(String accountNumber) {
+	}
+
+	private static void transfer(String accountNumber) {
+	}
+
+	private static void checkBalance(String accountNumber) {
+	}
+
+	private static void genStatement(String accountNumber) {
+	}
 
 	/* Clear standard output */
 	private static void clearStdOut() {
