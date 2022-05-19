@@ -152,8 +152,7 @@ public class Bank {
 			System.err.println(error.getMessage());
 		}
 
-		System.out.println("Press <enter> to return");
-		scn.nextLine();
+		returnToMenu();
 	}
 
 	// Edit a registered client
@@ -191,8 +190,7 @@ public class Bank {
 			System.err.println(error.getMessage());
 		}
 
-		System.out.println("\nPress <enter> to return");
-		scn.nextLine();
+		returnToMenu();
 	}
 
 	// Remove a client
@@ -223,9 +221,7 @@ public class Bank {
 			System.err.println(error.getMessage());
 		}
 
-		System.out.println();
-		System.out.println("Press <enter> to return");
-		scn.nextLine();
+		returnToMenu();
 	}
 
 	// List clients
@@ -242,9 +238,7 @@ public class Bank {
 			System.out.printf("%12s\n", client.getPhone());
 		}
 
-		System.out.println();
-		System.out.println("Press <enter> to return");
-		scn.nextLine();
+		returnToMenu();
 	}
 
 	/* ACCOUNT MANAGEMENT METHODS */
@@ -265,8 +259,7 @@ public class Bank {
 			System.err.println(error.getMessage());
 		}
 
-		System.out.println("Press <enter> to return");
-		scn.nextLine();
+		returnToMenu();
 	}
 
 	private static void removeAccount() {
@@ -298,8 +291,7 @@ public class Bank {
 			System.err.println(error.getMessage());
 		}
 
-		System.out.println("\nPress <enter> to return");
-		scn.nextLine();
+		returnToMenu();
 	}
 
 	private static void queryAccount() {
@@ -319,8 +311,7 @@ public class Bank {
 			System.err.println(error.getMessage());
 		}
 
-		System.out.println("Press <enter> to return");
-		scn.nextLine();
+		returnToMenu();
 	}
 
 	private static void listAccounts() {
@@ -336,8 +327,7 @@ public class Bank {
 			System.out.printf("R$ %.2f\n", account.getBalance());
 		}
 
-		System.out.println("\nPress <enter> to return");
-		scn.nextLine();
+		returnToMenu();
 	}
 
 	private static void earnInterest() {
@@ -397,8 +387,7 @@ public class Bank {
 			System.err.println(error.getMessage());
 		}
 		
-		System.out.println("\nPress <enter> to return");
-		scn.nextLine();
+		returnToMenu();
 	}
 
 	private static void deposit(String accountNumber) {
@@ -407,6 +396,7 @@ public class Bank {
 		System.out.println("====================\n");
 		System.out.println("Enter the amount: ");
 		double amount = scn.nextDouble();
+		scn.nextLine();
 
 		try {
 			controller.deposit(accountNumber, amount);
@@ -414,9 +404,26 @@ public class Bank {
 		} catch (AccountNotFoundException error) {
 			System.err.println(error.getMessage());
 		}
+
+		returnToMenu();
 	}
 
 	private static void withdraw(String accountNumber) {
+		clearStdOut();
+		System.out.println("WITHDRAWAL");
+		System.out.println("==========\n");
+		System.out.println("Enter the amount: ");
+		double amount = scn.nextDouble();
+		scn.nextLine();
+		
+		try {
+			controller.withdraw(accountNumber, amount);
+			System.out.println("Withdraw made!");
+		} catch (AccountNotFoundException | InsufficientBalanceException error) {
+			System.err.println(error.getMessage());
+		}
+
+		System.out.
 	}
 
 	private static void transfer(String accountNumber) {
@@ -431,5 +438,11 @@ public class Bank {
 	/* Clear standard output */
 	private static void clearStdOut() {
 		System.out.print("\033[H\033[2J");
+	}
+
+	/* Message to return to previous menu */
+	private static void returnToMenu() {
+		System.out.println("\nPress <enter> to return");
+		scn.nextLine();
 	}
 }
