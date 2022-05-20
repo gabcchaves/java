@@ -1,3 +1,5 @@
+package model.account;
+
 public class InsufficientBalanceException extends Exception {
 	Account account;
 
