@@ -1,4 +1,4 @@
-package model.conta;
+package model.account;
 
 import model.client.Client;
 
