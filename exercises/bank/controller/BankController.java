@@ -4,8 +4,8 @@ package controller;
  * the operations with the bank repository. */
 
 public class BankController {
-	private ClientRepository clientRepo;
-	private AccountRepository accountRepo;
+	private ClientRepo clientRepo;
+	private AccountRepo accountRepo;
 
 	public BankController() {
 		clientRepo = new ClientRepository();
