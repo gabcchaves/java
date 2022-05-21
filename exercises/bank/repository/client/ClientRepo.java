@@ -4,7 +4,7 @@ import model.client.Client;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClientRepo implements ClientRepo {
+public class ClientRepo implements ClientInterface {
 	List<Client> clients;
 
 	public ClientRepo() {

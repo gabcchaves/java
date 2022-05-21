@@ -23,7 +23,7 @@ public class AccountRepo implements AccountInterface {
 	}
 
 	@Override
-	public editAccount(Account account) {}
+	public void editAccount(Account account) {}
 
 	@Override
 	public void removeAccount(Account account) throws AccountNotFoundException {

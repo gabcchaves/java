@@ -1,0 +1,55 @@
+./controller/BankController.java:84: error: cannot find symbol
+	public void withdraw(String fromAccountNumber, String toAccountNumber, double amount) throws AccountNotFoundException, InsufficientBalanceExcetion {		
+	                                                                                                                       ^
+  symbol:   class InsufficientBalanceExcetion
+  location: class BankController
+Bank.java:349: error: incompatible types: void cannot be converted to boolean
+				if (controller.removeAccount(account)) {
+				                            ^
+Bank.java:409: error: incompatible types: Account cannot be converted to String
+			String accountNumber = controller.queryAccount(accountNumber);
+			                                              ^
+Bank.java:425: error: incompatible types: Integer cannot be converted to short
+					opCode = Integer.valueOf(scn.nextLine());
+					                        ^
+Bank.java:444: error: cannot find symbol
+						checkBalance(accountNumber());
+						             ^
+  symbol:   method accountNumber()
+  location: class Bank
+Bank.java:447: error: cannot find symbol
+						genStatement(accountNumber());
+						             ^
+  symbol:   method accountNumber()
+  location: class Bank
+Bank.java:505: error: cannot find symbol
+			controller.transfer(accountNumber, destinationAccountNumber, amount);
+			          ^
+  symbol:   method transfer(String,String,double)
+  location: variable controller of type BankController
+./controller/BankController.java:22: error: cannot find symbol
+		clientRepo = new ClientRepository();
+		                 ^
+  symbol:   class ClientRepository
+  location: class BankController
+./controller/BankController.java:23: error: cannot find symbol
+		accountRepo = new AccountRepository();
+		                  ^
+  symbol:   class AccountRepository
+  location: class BankController
+./controller/BankController.java:46: error: cannot find symbol
+			clientRepo.removeAccount(client);
+			          ^
+  symbol:   method removeAccount(Client)
+  location: variable clientRepo of type ClientRepo
+./controller/BankController.java:70: error: cannot find symbol
+			throw new IsufficientBalanceException();
+			          ^
+  symbol:   class IsufficientBalanceException
+  location: class BankController
+./model/account/InsufficientBalanceException.java:8: error: cannot find symbol
+		this.account = accout;
+		               ^
+  symbol:   variable accout
+  location: class InsufficientBalanceException
+12 errors

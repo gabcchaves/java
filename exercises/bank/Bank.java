@@ -3,11 +3,24 @@
  * It is in english, differently from the one it is based on, which is in portuguese. */
 
 import java.util.Scanner;
+import java.util.List;
+import controller.BankController;
+import controller.ControllerException;
+import model.account.Account;
+import model.account.InsufficientBalanceException;
+import model.client.Client;
+import repository.account.AccountNotFoundException;
+import repository.account.RegisteredAccountException;
+import repository.client.ClientNotFoundException;
+import repository.client.RegisteredClientException;
 
 public class Bank {
+	static BankController controller;
 	static Scanner scn = new Scanner(System.in);
 
 	public static void main(String args[]) {
+		controller = new BankController();
+
 		String[] menu = {
 			"MAIN MENU",
 			"==== ====",
@@ -21,6 +34,7 @@ public class Bank {
 		insertTestData();
 
 		// Main menu loop
+		int opCode;
 		do {
 			clearStdOut();
 			for (String line : menu) {
@@ -50,15 +64,15 @@ public class Bank {
 			}
 		} while (opCode != 0);
 
-		constroller.exit();
+		controller.exit();
 		System.out.println("Program finished");
 	}
 
 	// Initialize some clients and accounts
 	private static void insertTestData() {
 		try {
-			Client client01 = new Client("1", "John", "99135-7951");
-			Client client02 = new Client("2", "Jessy", "99246-842");
+			Client client01 = new Client("1", "John", 'M', "99135-7951");
+			Client client02 = new Client("2", "Jessy", 'F', "99246-842");
 			controller.insertClient(client01);
 			controller.insertClient(client02);
 
@@ -69,12 +83,12 @@ public class Bank {
 
 			// Insert some money on accounts
 			try {
-				controller.deposit(account01.getId(), 200);
-				controller.deposit(account02.getId(), 200);
+				controller.deposit(account01.getNumber(), 200);
+				controller.deposit(account02.getNumber(), 200);
 			} catch (AccountNotFoundException error) {
 				System.out.println(error.getMessage());
 			}
-		} catch (RegisteredIDException | RegisteredAccountException error) {
+		} catch (RegisteredClientException | RegisteredAccountException error) {
 			System.out.println(error.getMessage());
 		}
 	}
@@ -92,9 +106,9 @@ public class Bank {
 			"<0> Back to main menu\n"
 		};
 
-		short opCode;
+		int opCode;
 		do {
-			System.out.print();
+			System.out.println();
 			for (String lines : menu) {
 				System.out.print(lines);
 			}
@@ -121,8 +135,8 @@ public class Bank {
 				case 4:
 					listClients();
 					break;
-			} while (opCode != 0);
-		}
+			}
+		} while (opCode != 0);
 	}
 
 	// Insert client
@@ -138,7 +152,7 @@ public class Bank {
 		String name = scn.nextLine();
 
 		System.out.println("Sex: ");
-		String name = scn.nextLine();
+		char sex = scn.next().charAt(0);
 
 		System.out.println("Phone: ");
 		String phone = scn.nextLine();
@@ -175,8 +189,9 @@ public class Bank {
 
 			System.out.println("Sex: " + client.getSex());
 			System.out.print("Sex: (<enter> = Do not change): ");
-			String sex = scn.nextLine();
-			if (!sex.equals("")) client.setSex(sex);
+			char sex = scn.next().charAt(0);
+			if (sex != ' ')
+				client.setSex(sex);
 
 			System.out.println("Phone: " + client.getPhone());
 			System.out.print("Phone: (<enter> = Do not change)");
@@ -242,6 +257,56 @@ public class Bank {
 	}
 
 	/* ACCOUNT MANAGEMENT METHODS */
+	// Print account management menu
+	private static void manageAccounts() {
+		String[] menu = {
+			"ACCOUNT MANAGEMENT",
+			"======= ==========",
+			"\n<1> Insert account",
+			"<2> Remove account",
+			"<3> Query account",
+			"<4> List accounts",
+			"<5> Earn interest",
+			"<0> Back to main menu\n"
+		};
+
+		int opCode;
+		do {
+			System.out.println();
+			for (String lines : menu) {
+				System.out.println(lines);
+			}
+
+			try {
+				opCode = Integer.valueOf(scn.nextLine());
+			} catch (Exception error) {
+				opCode = 0;
+			}
+
+			switch (opCode) {
+				case 0:
+					clearStdOut();
+					break;
+				case 1:
+					insertAccount();
+					break;
+				case 2:
+					removeAccount();
+					break;
+				case 3:
+					queryAccount();
+					break;
+				case 4:
+					listAccounts();
+					break;
+				case 5:
+					earnInterest();
+					break;
+			}
+		} while (opCode != 0);
+	}
+
+
 	private static void insertAccount() {
 		clearStdOut();
 		System.out.println("NEW ACCOUNT");

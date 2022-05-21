@@ -1,7 +1,18 @@
-package controller;
-
 /* This is the controller of the bank repository. It is supposed to handle all
  * the operations with the bank repository. */
+
+package controller;
+
+import model.account.Account;
+import model.account.InsufficientBalanceException;
+import model.client.Client;
+import repository.account.AccountRepo;
+import repository.account.AccountNotFoundException;
+import repository.account.RegisteredAccountException;
+import repository.client.ClientRepo;
+import repository.client.ClientNotFoundException;
+import repository.client.RegisteredClientException;
+import java.util.List;
 
 public class BankController {
 	private ClientRepo clientRepo;
@@ -14,7 +25,7 @@ public class BankController {
 	
 	/* Client operations */
 
-	public void insertClient(Client client) throws RegisteredIDException {
+	public void insertClient(Client client) throws RegisteredClientException {
 		clientRepo.insertClient(client);
 	}
 
@@ -22,7 +33,7 @@ public class BankController {
 		clientRepo.editClient(client);
 	}
 
-	public void queryClient(String id) throws ClientNotFoundException {
+	public Client queryClient(String id) throws ClientNotFoundException {
 		return clientRepo.queryClient(id);
 	}
 
@@ -48,19 +59,18 @@ public class BankController {
 		return accountRepo.insertAccount(account);
 	}
 
-	public Account insertAccount(Account account) throws RegisteredAccountException {
-		return accountRepo.insertAccount(account);
-	}
-
 	public Account queryAccount(String number) throws AccountNotFoundException {
 		return accountRepo.queryAccount(number);
 	}
 
 	public void removeAccount(Account account) throws AccountNotFoundException {
-		if (account.getBalance() == 0) {
-			accountRepo.removeAccount(account);
-		} else {
-			throw new IsufficientBalanceException();
+		// Remove account only if it has no balance
+		try {
+			if (account.getBalance() = 0) {
+				accountRepo.removeAccount(account);
+			} else {
+		} catch (AccountNotFoundException error) {
+			System.err.println(error.getMessage());
 		}
 	}
 
@@ -88,4 +98,6 @@ public class BankController {
 	public List<Account> getAllAccounts(String id) {
 		return accountRepo.getAll(id);
 	}
+
+	public void exit() {}
 }
